@@ -45,13 +45,15 @@ class _CartState extends State<Cart> {
                             width: 20,
                           ),
                           Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
                                 "${homeProvider!.DetailList[index].name}",
                                 style: TextStyle(fontSize: 15),
                               ),
                               Text(
-                                "${homeProvider!.DetailList[index].price}",
+                                "${homeProvider!.DetailList[index].price! * homeProvider!.DetailList[index].quntity!}",
                                 style: TextStyle(fontSize: 15),
                               ),
                             ],
@@ -62,15 +64,14 @@ class _CartState extends State<Cart> {
                         children: [
                           InkWell(
                             onTap: () {
-                              homeProvider!.Add();
                               Model m1 = Model(
-                                image: homeProvider!.DetailList[index].image,
-                                price: homeProvider!.DetailList[index].price! * 2,
-                                name: homeProvider!.DetailList[index].name,
-                                quntity: homeProvider!.DetailList[index].quntity! + homeProvider!.i,
-                              );
-                              homeProvider!.Price(index, m1);
-                              print(homeProvider!.i);
+                                  image: homeProvider!.DetailList[index].image,
+                                  name: homeProvider!.DetailList[index].name,
+                                  price: homeProvider!.DetailList[index].price!,
+                                  quntity:
+                                      homeProvider!.DetailList[index].quntity! +
+                                          1);
+                              homeProvider!.updateList(m1, index);
                             },
                             child: Text(
                               "+",
@@ -85,11 +86,33 @@ class _CartState extends State<Cart> {
                             width: 20,
                           ),
                           InkWell(
-                            onTap: () {},
+                            onTap: () {
+                              Model m1 = Model(
+                                  image: homeProvider!.DetailList[index].image,
+                                  name: homeProvider!.DetailList[index].name,
+                                  price: homeProvider!.DetailList[index].price,
+                                  quntity:
+                                      homeProvider!.DetailList[index].quntity! -
+                                          1);
+                              homeProvider!.updateList(m1, index);
+                            },
                             child: Text(
                               "-",
                               style: TextStyle(fontSize: 40),
                             ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Model m1 = Model(
+                                image: homeProvider!.DetailList[index].image,
+                                name: homeProvider!.DetailList[index].name,
+                                price: homeProvider!.DetailList[index].price,
+                                quntity:
+                                    homeProvider!.DetailList[index].quntity,
+                              );
+                              homeProvider!.Delete(m1, index);
+                            },
+                            child: Icon(Icons.delete),
                           ),
                         ],
                       ),
